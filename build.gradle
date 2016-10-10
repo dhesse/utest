@@ -6,9 +6,8 @@ model {
     }
     test(NativeExecutableSpec) {
       sources {
-        cpp.lib library: 'utest'
+        cpp.lib library: 'utest', linkage: 'api'
       }
     }
-
   }
 }

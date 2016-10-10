@@ -7,7 +7,7 @@ namespace utest {
   
   class TestCase {
   public:
-    virtual void run() {};
+    virtual void run() = 0;
     const TestResult& result() const { return result_; }
   protected:
     void assertTrue(bool b) {
