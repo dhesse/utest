@@ -19,6 +19,11 @@ namespace utest {
           result_.fail();
       }
     }
+    void report(void (*f)(const TestResult&)) const override {
+      for (auto i: tests_) {
+        i->report(f);
+      }
+    }    
     void register_test(std::shared_ptr<TestCase> t) {
       tests_.push_back(t);
     }

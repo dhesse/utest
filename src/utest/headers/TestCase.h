@@ -9,6 +9,10 @@ namespace utest {
   public:
     virtual void run() = 0;
     const TestResult& result() const { return result_; }
+
+    virtual void report( void(*f)(const TestResult&)) const {
+      f(result_);
+    }
   protected:
     void assertTrue(bool b) {
       if (b)

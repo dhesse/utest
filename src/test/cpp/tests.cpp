@@ -1,5 +1,6 @@
 #include "TestTestResult.h"
 #include "TestMultiTestCase.h"
+#include "ReportResult.h"
 
 #include <iostream>
 #include <memory>
@@ -10,6 +11,7 @@ int main() {
   tests.register_test(std::make_shared<TestMultiTestCaseRunsAllTests>());
   tests.register_test(std::make_shared<TestMultiTestCaseRegistersFailsAndSuccesses>());
   tests.run();
+  tests.report(utest::report);
   if(tests.result()){
     std::cout << "TestResult test passed!\n";
     return 0;

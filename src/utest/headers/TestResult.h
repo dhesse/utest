@@ -1,16 +1,26 @@
 #ifndef UTEST_TESTRESULT_H
 #define UTEST_TESTRESULT_H
 
+#include <string>
+
 namespace utest {
   class TestResult {
   public:
-    TestResult() : nfails(0), nsuccesses(0) { }
-    void fail() { nfails++; }
-    void succeed() { nsuccesses++; }
-    operator bool() const { return nfails == 0; }
+    TestResult(std::string name = "") :
+      nfails_(0), nsuccesses_(0), name_(name) { }
+    void fail() { nfails_++; }
+    void succeed() { nsuccesses_++; }
+
+    int fails() const { return nfails_; }
+    int successes() const { return nsuccesses_; }
+    const std::string& name() const { return name_; }
+
+    operator bool() const { return nfails_ == 0; }
+
   private:
-    int nfails;
-    int nsuccesses;
+    int nfails_;
+    int nsuccesses_;
+    std::string name_;
   };
 }
 
