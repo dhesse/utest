@@ -1,0 +1,14 @@
+apply plugin: 'cpp'
+
+model {
+  components {
+    utest(NativeLibrarySpec) {
+    }
+    test(NativeExecutableSpec) {
+      sources {
+        cpp.lib library: 'utest'
+      }
+    }
+
+  }
+}
