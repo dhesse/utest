@@ -4,7 +4,7 @@
 
 class TestTestResult: public utest::TestCase {
 public:
-  void run() {
+  void run() override {
     utest::TestResult r;
     assertTrue(r);
     r.fail();

@@ -10,4 +10,5 @@ model {
       }
     }
   }
+  binaries { all { cppCompiler.args '--std=c++11' } }
 }
