@@ -17,7 +17,6 @@ namespace utest {
         result_.fail();
     }
     void assertFalse(bool b) { assertTrue(!b); }
-  private:
     TestResult result_;
   };
 }
