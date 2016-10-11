@@ -10,6 +10,8 @@ namespace utest {
 
   class MultiTestCase : public TestCase {
   public:
+    MultiTestCase(const std::string& name = "") :
+      TestCase(name) { }
     void run() override {
       for (auto i: tests_) {
         i->run();
@@ -19,10 +21,12 @@ namespace utest {
           result_.fail();
       }
     }
-    void report(void (*f)(const TestResult&)) const override {
-      for (auto i: tests_) {
-        i->report(f);
-      }
+    void report(std::shared_ptr<TestReporter> r) const override {
+      r->report(result_);
+      r->next_level();
+      for (auto i: tests_)
+        i->report(r);
+      r->previous_level();
     }    
     void register_test(std::shared_ptr<TestBase> t) {
       tests_.push_back(t);

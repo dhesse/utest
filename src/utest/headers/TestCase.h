@@ -2,9 +2,11 @@
 #define UTEST_TESTCASE_H
 
 #include <string>
+#include <memory>
 
 #include "TestResult.h"
 #include "TestBase.h"
+#include "ReportResult.h"
 
 namespace utest {
 
@@ -14,8 +16,8 @@ namespace utest {
 
     const TestResult& result() const override { return result_; }
 
-    virtual void report( void(*f)(const TestResult&)) const override {
-      f(result_);
+    virtual void report(std::shared_ptr<TestReporter> r) const override {
+      r->report(result_);
     }
   protected:
     void assertTrue(bool b) {

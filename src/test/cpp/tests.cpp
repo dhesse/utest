@@ -6,16 +6,12 @@
 #include <memory>
 
 int main() {
-  utest::MultiTestCase tests;
+  utest::MultiTestCase tests("root");
   tests.register_test(std::make_shared<TestTestResult>());
   tests.register_test(std::make_shared<TestMultiTestCaseRunsAllTests>());
   tests.register_test(std::make_shared<TestMultiTestCaseRegistersFailsAndSuccesses>());
   tests.run();
-  tests.report(utest::report);
-  if(tests.result()){
-    std::cout << "TestResult test passed!\n";
-    return 0;
-  }
-  std::cout << "TestResult test failed!\n";
-  return 1;
+  auto reporter = std::make_shared<utest::BasicTestReporter>();
+  tests.report(reporter);
+  return tests.result() ? 0 : 1;
 }
