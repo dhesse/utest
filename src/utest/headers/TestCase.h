@@ -4,16 +4,17 @@
 #include <string>
 
 #include "TestResult.h"
+#include "TestBase.h"
 
 namespace utest {
-  
-  class TestCase {
+
+  class TestCase : public TestBase {
   public:
     TestCase(const std::string& name = "") : result_(name) { }
-    virtual void run() = 0;
-    const TestResult& result() const { return result_; }
 
-    virtual void report( void(*f)(const TestResult&)) const {
+    const TestResult& result() const override { return result_; }
+
+    virtual void report( void(*f)(const TestResult&)) const override {
       f(result_);
     }
   protected:

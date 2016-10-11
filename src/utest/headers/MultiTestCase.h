@@ -24,11 +24,11 @@ namespace utest {
         i->report(f);
       }
     }    
-    void register_test(std::shared_ptr<TestCase> t) {
+    void register_test(std::shared_ptr<TestBase> t) {
       tests_.push_back(t);
     }
   private:
-    std::vector<std::shared_ptr<TestCase> > tests_;
+    std::vector<std::shared_ptr<TestBase> > tests_;
   };
 
 }
