@@ -16,6 +16,8 @@ class TestMultiTestCaseRunsAllTests : public utest::TestCase {
     int nruns;
   };
 public:
+  TestMultiTestCaseRunsAllTests():
+    TestCase("MultiTestCaseRunsAllTests") { }
   void run() override {
     utest::MultiTestCase m;
     auto mock = std::make_shared<CheckRunMock>(); 
@@ -38,6 +40,8 @@ class TestMultiTestCaseRegistersFailsAndSuccesses : public utest::TestCase {
   };
 
 public:
+  TestMultiTestCaseRegistersFailsAndSuccesses():
+    TestCase("MultiTestCaseRegistersFailsAndSuccesses") { }
   void run() override {
     utest::MultiTestCase m;
     m.register_test(std::make_shared<SuccessMock>());

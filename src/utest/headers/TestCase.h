@@ -1,12 +1,15 @@
 #ifndef UTEST_TESTCASE_H
 #define UTEST_TESTCASE_H
 
+#include <string>
+
 #include "TestResult.h"
 
 namespace utest {
   
   class TestCase {
   public:
+    TestCase(const std::string& name = "") : result_(name) { }
     virtual void run() = 0;
     const TestResult& result() const { return result_; }
 

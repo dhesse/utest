@@ -6,6 +6,7 @@
 
 class TestTestResult: public utest::TestCase {
 public:
+  TestTestResult() : TestCase("TestResult") { }
   void run() override {
     utest::TestResult r;
     assertTrue(r);
