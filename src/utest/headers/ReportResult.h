@@ -5,14 +5,18 @@
 #include <iostream>
 
 #include "TestResult.h"
+#include "TerminalColor.h"
 
 namespace utest {
 
   void report(const TestResult& r) {
-    std::cout << r.name()
-              << (r ? " [PASS] (" : " [FAIL] (")
-              << r.successes() << "/"
-              << r.fails() + r.successes() << ")\n";
+
+    std::string pass = colorize("[PASS]", TextColor::green);
+    std::string fail = colorize("[FAIL]", TextColor::red);
+    std::cout << (r ? pass : fail)
+              << " (" << r.successes() << "/"
+              << r.fails() + r.successes() << ") "
+              << r.name() << std::endl;
   }
 
 }
