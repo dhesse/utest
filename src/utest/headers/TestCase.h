@@ -29,6 +29,7 @@ namespace utest {
     void assertFalse(bool b) { assertTrue(!b); }
     TestResult result_;
   };
+
 }
 
 #endif

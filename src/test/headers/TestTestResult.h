@@ -2,17 +2,13 @@
 #define TEST_TEST_RESULT_H
 
 #include "TestResult.h"
-#include "TestCase.h"
+#include "Utest.h"
 
-class TestTestResult: public utest::TestCase {
-public:
-  TestTestResult() : TestCase("TestResult") { }
-  void run() override {
-    utest::TestResult r;
-    assertTrue(r);
-    r.fail();
-    assertFalse(r);
-  }
-};
+UTEST_CASE(TestResult) {
+  utest::TestResult r;
+  assertTrue(r);
+  r.fail();
+  assertFalse(r);
+}
 
 #endif
