@@ -11,7 +11,7 @@ namespace utest {
   class MultiTestCase : public TestCase {
   public:
     MultiTestCase(const std::string& name = "") :
-      TestCase(name) { }
+      TestCase(name), tests_(0), current_ (this), previous_(this) { }
     void run() override {
       for (auto i: tests_) {
         i->run();
@@ -29,10 +29,20 @@ namespace utest {
       r->previous_level();
     }    
     void register_test(TestBase* t) {
-      tests_.push_back(t);
+      if (current_ == this) {
+        if (MultiTestCase* m = dynamic_cast<MultiTestCase*>(t)) {
+          m->previous_ = this;
+          current_ = m;
+        }
+        tests_.push_back(t);
+      } else {
+        current_->register_test(t);
+      }
     }
   private:
     std::vector<TestBase* > tests_;
+    MultiTestCase* current_;
+    MultiTestCase* previous_;
   };
 
 }
