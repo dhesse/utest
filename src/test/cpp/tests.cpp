@@ -7,8 +7,8 @@
 #include <memory>
 
 int main() {
-  auto reporter = std::make_shared<utest::BasicTestReporter>();
+  utest::BasicTestReporter reporter;
   utest::root().run();
-  utest::root().report(reporter);
+  utest::root().report(&reporter);
   return utest::root().result() ? 0 : 1;
 }

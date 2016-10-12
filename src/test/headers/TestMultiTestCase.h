@@ -7,7 +7,17 @@
 
 #include <memory>
 
-struct CheckRunMock : public utest::TestCase {
+template <class Self>
+struct ProvideStaticInstance {
+  static Self* get_instance() {
+    static Self instance;
+    return &instance;
+  }
+};
+
+struct CheckRunMock :
+  public utest::TestCase,
+  public ProvideStaticInstance<CheckRunMock> {
   CheckRunMock(): nruns(0) {};
   void run() override {
     nruns += 1;
@@ -15,20 +25,23 @@ struct CheckRunMock : public utest::TestCase {
   int nruns;
 };
 
+
 UTEST_CASE(MultiTestCaseRunsAllTests) {
   utest::MultiTestCase m;
-  auto mock = std::make_shared<CheckRunMock>(); 
-  m.register_test(mock);
+  m.register_test(CheckRunMock::get_instance());
   m.run();
-  assertTrue(mock->nruns == 1);
+  assertTrue(CheckRunMock::get_instance()->nruns == 1);
 };
 
-
-struct SuccessMock : public utest::TestCase {
+struct SuccessMock:
+  public utest::TestCase,
+  public ProvideStaticInstance<SuccessMock> {
   void run() override {}
 };
 
-struct FailMock: public utest::TestCase {
+struct FailMock:
+  public utest::TestCase,
+  public ProvideStaticInstance<FailMock> {
   void run() override {
     result_.fail();
   }
@@ -36,8 +49,8 @@ struct FailMock: public utest::TestCase {
 
 UTEST_CASE(MultiTestCaseRegistersFailsAndSuccesses) {
   utest::MultiTestCase m;
-  m.register_test(std::make_shared<SuccessMock>());
-  m.register_test(std::make_shared<FailMock>());
+  m.register_test(SuccessMock::get_instance());
+  m.register_test(FailMock::get_instance());
   m.run();
   assertFalse(m.result());
 };
