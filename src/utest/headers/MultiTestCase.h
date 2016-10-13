@@ -33,8 +33,12 @@ namespace utest {
         if (MultiTestCase* m = dynamic_cast<MultiTestCase*>(t)) {
           m->previous_ = this;
           current_ = m;
+          test_.push_back(t)
+        } else if (t == nullptr) {
+          previous_->current_ = previous_;
+        } else {
+          tests_.push_back(t);
         }
-        tests_.push_back(t);
       } else {
         current_->register_test(t);
       }
