@@ -10,7 +10,7 @@
 #define UTEST_CASE(name) class name: public utest::TestCase { \
 public:                                                       \
  name(): TestCase(#name) {                                    \
-   utest::root().register_test(this);                         \
+   utest::root().register_instance(this);                     \
  }                                                            \
  void run();                                                  \
 private:                                                      \

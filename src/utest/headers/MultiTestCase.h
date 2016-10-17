@@ -8,12 +8,39 @@
 
 namespace utest {
 
-  class MultiTestCase : public TestCase {
+  template <class Self, class Base>
+  class Nestable {
+  public:
+    Nestable<Self, Base>(Self* s): base_ptrs_(0), current_(s), previous_(s), this_(s) { }
+    void register_instance(Base* b) {
+      if (current_ == this_) {
+        if (Self* s = dynamic_cast<Self*>(b)) {
+          s->previous_ = this_;
+          current_ = s;
+          base_ptrs_.push_back(b);
+        } else if (b == nullptr) {
+          previous_->current_ = previous_;
+        } else {
+          base_ptrs_.push_back(b);
+        }
+      } else {
+        current_->register_instance(b);
+      }
+    }
+  protected:
+    std::vector<Base*> base_ptrs_;
+    Self* current_;
+    Self* previous_;
+    Self* this_;
+  };
+
+  class MultiTestCase : public TestCase,
+                        public Nestable<MultiTestCase, TestBase> {
   public:
     MultiTestCase(const std::string& name = "") :
-      TestCase(name), tests_(0), current_ (this), previous_(this) { }
+      TestCase(name), Nestable(this) { }
     void run() override {
-      for (auto i: tests_) {
+      for (auto i: base_ptrs_) {
         i->run();
         if (i->result())
           result_.succeed();
@@ -24,30 +51,10 @@ namespace utest {
     void report(TestReporter* r) const override {
       r->report(result_);
       r->next_level();
-      for (auto i: tests_)
+      for (auto i: base_ptrs_)
         i->report(r);
       r->previous_level();
     }    
-    void register_test(TestBase* t) {
-      if (current_ == this) {
-        if (MultiTestCase* m = dynamic_cast<MultiTestCase*>(t)) {
-          m->previous_ = this;
-          current_ = m;
-          tests_.push_back(t);
-        } else if (t == nullptr) {
-          previous_->current_ = previous_;
-        } else {
-          tests_.push_back(t);
-        }
-      } else {
-        current_->register_test(t);
-      }
-    }
-  private:
-    std::vector<TestBase* > tests_;
-  protected:
-    MultiTestCase* current_;
-    MultiTestCase* previous_;
   };
 
 }

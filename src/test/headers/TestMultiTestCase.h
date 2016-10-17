@@ -28,7 +28,7 @@ struct CheckRunMock :
 
 UTEST_CASE(MultiTestCaseRunsAllTests) {
   utest::MultiTestCase m;
-  m.register_test(CheckRunMock::get_instance());
+  m.register_instance(CheckRunMock::get_instance());
   m.run();
   assertTrue(CheckRunMock::get_instance()->nruns == 1);
 };
@@ -49,8 +49,8 @@ struct FailMock:
 
 UTEST_CASE(MultiTestCaseRegistersFailsAndSuccesses) {
   utest::MultiTestCase m;
-  m.register_test(SuccessMock::get_instance());
-  m.register_test(FailMock::get_instance());
+  m.register_instance(SuccessMock::get_instance());
+  m.register_instance(FailMock::get_instance());
   m.run();
   assertFalse(m.result());
 };
@@ -64,24 +64,24 @@ struct MultiMock:
 
 UTEST_CASE(MultiTestCaseGoesToNextLevel) {
   MultiMock m, n;
-  m.register_test(&n);
+  m.register_instance(&n);
   assertTrue(m.get_current() == &n);
   assertTrue(n.get_current() == &n);
 }
 
 UTEST_CASE(MultiTestComesBackToPreviousOnNull) {
   MultiMock m, n;
-  m.register_test(&n);
-  m.register_test(nullptr);
+  m.register_instance(&n);
+  m.register_instance(nullptr);
   assertTrue(m.get_current() == &m);
 }
 
 UTEST_CASE(MultiTestPassesToThirdLevel) {
   MultiMock m, n, o;
-  m.register_test(&n);
-  m.register_test(&o);
+  m.register_instance(&n);
+  m.register_instance(&o);
   assertTrue(n.get_current() == &o);
-  m.register_test(nullptr);
+  m.register_instance(nullptr);
   assertTrue(n.get_current() == &n);
 }
 
