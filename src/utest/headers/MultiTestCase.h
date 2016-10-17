@@ -33,7 +33,7 @@ namespace utest {
         if (MultiTestCase* m = dynamic_cast<MultiTestCase*>(t)) {
           m->previous_ = this;
           current_ = m;
-          test_.push_back(t)
+          tests_.push_back(t);
         } else if (t == nullptr) {
           previous_->current_ = previous_;
         } else {
@@ -45,6 +45,7 @@ namespace utest {
     }
   private:
     std::vector<TestBase* > tests_;
+  protected:
     MultiTestCase* current_;
     MultiTestCase* previous_;
   };

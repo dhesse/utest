@@ -55,4 +55,34 @@ UTEST_CASE(MultiTestCaseRegistersFailsAndSuccesses) {
   assertFalse(m.result());
 };
 
+struct MultiMock:
+  public utest::MultiTestCase,
+  public ProvideStaticInstance<MultiMock> {
+  utest::MultiTestCase const* get_current() const { return current_; }
+  utest::MultiTestCase const* get_previous() const { return previous_; }
+};
+
+UTEST_CASE(MultiTestCaseGoesToNextLevel) {
+  MultiMock m, n;
+  m.register_test(&n);
+  assertTrue(m.get_current() == &n);
+  assertTrue(n.get_current() == &n);
+}
+
+UTEST_CASE(MultiTestComesBackToPreviousOnNull) {
+  MultiMock m, n;
+  m.register_test(&n);
+  m.register_test(nullptr);
+  assertTrue(m.get_current() == &m);
+}
+
+UTEST_CASE(MultiTestPassesToThirdLevel) {
+  MultiMock m, n, o;
+  m.register_test(&n);
+  m.register_test(&o);
+  assertTrue(n.get_current() == &o);
+  m.register_test(nullptr);
+  assertTrue(n.get_current() == &n);
+}
+
 #endif // UTEST_MULTI_TEST_CASE_TEST_H
