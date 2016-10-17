@@ -1,6 +1,8 @@
 #include "TestTestResult.h"
 #include "TestMultiTestCase.h"
 #include "ReportResult.h"
+#include "TestTestCase.h"
+
 #include "Utest.h"
 
 #include <iostream>
