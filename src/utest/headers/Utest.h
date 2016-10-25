@@ -19,6 +19,24 @@ private:                                                      \
 name name::instance_;                                         \
 void name::run()                                           
 
+#define UTEST_SUITE(name) class name: public utest::MultiTestCase { \
+public:                                                             \
+ name(): MultiTestCase(#name) {                                     \
+   utest::root().register_instance(this);                           \
+ }                                                                  \
+private:                                                            \
+ static name instance_;                                             \
+};                                                                  \
+name name::instance_;
+
+#define UTEST_SUITE_END struct end__COUNTER__ { \
+  end__COUNTER__() {                            \
+    utest::root().register_instance(nullptr);   \
+  }                                             \
+  static end__COUNTER__ instance;               \
+};                                              \
+end__COUNTER__ end__COUNTER__::instance;
+  
 
 namespace utest {
 

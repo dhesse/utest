@@ -26,6 +26,10 @@ namespace utest {
         result_.fail();
     }
     void assertFalse(bool b) { assertTrue(!b); }
+    template <class T>
+    void assertEqual(const T& t1, const T& t2) {
+      assertTrue(t1 == t2);
+    }
     TestResult result_;
   };
 
